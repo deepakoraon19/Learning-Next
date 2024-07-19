@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
 
 function Nav() {
-  let isUserLoggedIn = true;
-  const signOut = () => {
-    console.log("Yo");
-  };
+  let isUserLoggedIn = false;
+
+  const signOut = () => {};
+
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-2 flex-center">
@@ -28,11 +27,11 @@ function Nav() {
               Create Post
             </Link>
             <button type="button" onClick={signOut} className="outline_btn">
-              Sign Out
+              Logout
             </button>
             <Link href="/profile">
               <Image
-                src="/assets/images/logo.svg"
+                src="/assets/images/man.png"
                 alt="profile"
                 width={30}
                 height={30}
@@ -40,7 +39,9 @@ function Nav() {
             </Link>
           </div>
         ) : (
-          <></>
+          <button type="button" onClick={signOut} className="outline_btn">
+            Login
+          </button>
         )}
       </div>
     </nav>
