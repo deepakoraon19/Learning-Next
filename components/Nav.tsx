@@ -2,11 +2,36 @@
 
 import Link from "next/link";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@lib/store";
+import { logOutUser } from "@lib/features/users/userSlice";
+import User from "@interfaces/user";
 function Nav() {
-  let isUserLoggedIn = false;
+  const router = useRouter();
 
-  const signOut = () => {};
+  const user = useSelector(
+    (state: RootState) => state.user.loggedInUser as User
+  );
+
+  const dispatch = useDispatch();
+
+  const [isUserLoggedIn, setisUserLoggedIn] = useState(
+    user._id && user._id.length > 0
+  );
+
+  const signOut = () => {
+    dispatch(logOutUser());
+    localStorage.setItem("userId", "");
+    setisUserLoggedIn(false);
+    router.push("/");
+  };
+
+  useEffect(() => {
+    console.log("here")
+    setisUserLoggedIn(user._id && user._id.length > 0);
+  }, [user]);
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
@@ -39,7 +64,13 @@ function Nav() {
             </Link>
           </div>
         ) : (
-          <button type="button" onClick={signOut} className="outline_btn">
+          <button
+            type="button"
+            onClick={() => {
+              router.push("/login");
+            }}
+            className="outline_btn"
+          >
             Login
           </button>
         )}
